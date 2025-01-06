@@ -158,6 +158,156 @@ def playfair_cipher(text, key, encrypt=True):
 
     return decrypted_text
 
+def two_square_cipher_encrypt(text, key1, key2):
+    """Encrypt using the Two-Square cipher."""
+    alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ'
+    key1_matrix = create_playfair_matrix(key1)
+    key2_matrix = create_playfair_matrix(key2)
+
+    text = text.upper().replace(' ', '').replace('J', 'I')
+    pairs = []
+    i = 0
+    while i < len(text):
+        a = text[i]
+        b = text[i + 1] if i + 1 < len(text) else 'X'
+        if a == b:
+            pairs.append((a, 'X'))
+            i += 1
+        else:
+            pairs.append((a, b))
+            i += 2
+
+    result = []
+    for a, b in pairs:
+        row1, col1 = next((r, c) for r, line in enumerate(key1_matrix) for c, char in enumerate(line) if char == a)
+        row2, col2 = next((r, c) for r, line in enumerate(key2_matrix) for c, char in enumerate(line) if char == b)
+
+        result.append(key1_matrix[row1][col2])
+        result.append(key2_matrix[row2][col1])
+
+    return ''.join(result)
+
+def two_square_cipher_decrypt(text, key1, key2):
+    """Decrypt using the Two-Square cipher."""
+    alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ'
+    key1_matrix = create_playfair_matrix(key1)
+    key2_matrix = create_playfair_matrix(key2)
+
+    text = text.upper().replace(' ', '').replace('J', 'I')
+    pairs = []
+    i = 0
+    while i < len(text):
+        a = text[i]
+        b = text[i + 1] if i + 1 < len(text) else 'X'
+        pairs.append((a, b))
+        i += 2
+
+    result = []
+    for a, b in pairs:
+        row1, col1 = next((r, c) for r, line in enumerate(key1_matrix) for c, char in enumerate(line) if char == a)
+        row2, col2 = next((r, c) for r, line in enumerate(key2_matrix) for c, char in enumerate(line) if char == b)
+
+        result.append(key1_matrix[row1][col2])
+        result.append(key2_matrix[row2][col1])
+
+    return ''.join(result)
+
+def four_square_cipher_encrypt(text, key1, key2):
+    """Encrypt using the Four-Square cipher."""
+    alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ'
+    key1_matrix = create_playfair_matrix(key1)
+    key2_matrix = create_playfair_matrix(key2)
+
+    text = text.upper().replace(' ', '').replace('J', 'I')
+    if len(text) % 2 != 0:
+        text += 'X'
+
+    result = []
+    for i in range(0, len(text), 2):
+        a, b = text[i], text[i + 1]
+        row1, col1 = next((r, c) for r, line in enumerate(key1_matrix) for c, char in enumerate(line) if char == a)
+        row2, col2 = next((r, c) for r, line in enumerate(key2_matrix) for c, char in enumerate(line) if char == b)
+
+        result.append(key1_matrix[row1][col2])
+        result.append(key2_matrix[row2][col1])
+
+    return ''.join(result)
+
+def four_square_cipher_decrypt(text, key1, key2):
+    """Decrypt using the Four-Square cipher."""
+    alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ'
+    key1_matrix = create_playfair_matrix(key1)
+    key2_matrix = create_playfair_matrix(key2)
+
+    text = text.upper().replace(' ', '').replace('J', 'I')
+    result = []
+
+    for i in range(0, len(text), 2):
+        a, b = text[i], text[i + 1]
+        row1, col1 = next((r, c) for r, line in enumerate(key1_matrix) for c, char in enumerate(line) if char == a)
+        row2, col2 = next((r, c) for r, line in enumerate(key2_matrix) for c, char in enumerate(line) if char == b)
+
+        result.append(key1_matrix[row1][col2])
+        result.append(key2_matrix[row2][col1])
+
+    return ''.join(result)
+
+def rail_fence_cipher(text, num_rails, encrypt=True):
+    """Encrypt or decrypt using Rail Fence cipher."""
+    if num_rails <= 1:
+        return text  # No encryption if rails are 1 or less
+
+    if encrypt:
+        # Create an empty array for rails
+        rails = [''] * num_rails
+        direction_down = False
+        row = 0
+
+        # Fill the rails in a zigzag manner
+        for char in text:
+            rails[row] += char
+            if row == 0 or row == num_rails - 1:
+                direction_down = not direction_down
+            row += 1 if direction_down else -1
+
+        return ''.join(rails)
+
+    else:
+        # Decrypt
+        length = len(text)
+        rail_lengths = [0] * num_rails
+        direction_down = False
+        row = 0
+
+        # Calculate the length of each rail
+        for _ in range(length):
+            rail_lengths[row] += 1
+            if row == 0 or row == num_rails - 1:
+                direction_down = not direction_down
+            row += 1 if direction_down else -1
+
+        # Fill the rails with ciphertext
+        rails = []
+        index = 0
+        for rail_length in rail_lengths:
+            rails.append(text[index:index + rail_length])
+            index += rail_length
+
+        # Read the plaintext in zigzag order
+        plaintext = ''
+        row = 0
+        direction_down = False
+        rail_indices = [0] * num_rails
+
+        for _ in range(length):
+            plaintext += rails[row][rail_indices[row]]
+            rail_indices[row] += 1
+            if row == 0 or row == num_rails - 1:
+                direction_down = not direction_down
+            row += 1 if direction_down else -1
+
+        return plaintext
+
 def menu():
     """Displays the main menu for cipher selection."""
     print("\nCryptography Machine")
@@ -167,7 +317,10 @@ def menu():
     print("4. Autokey Cipher")
     print("5. Beaufort Cipher")
     print("6. Playfair Cipher")
-    print("7. Exit")
+    print("7. Two-Square Cipher")
+    print("8. Four-Square Cipher")
+    print("9. Rail Fence Cipher")
+    print("10. Exit")
     return input("Select an option: ")
 
 def main():
@@ -220,6 +373,33 @@ def main():
                 print("Result:", playfair_cipher(text, key, encrypt))
 
             elif choice == '7':
+                text = input("Enter text: ")
+                key1 = input("Enter first key: ")
+                key2 = input("Enter second key: ")
+                operation = input("Encrypt or Decrypt (e/d): ").lower()
+                if operation == 'e':
+                    print("Result:", two_square_cipher_encrypt(text, key1, key2))
+                elif operation == 'd':
+                    print("Result:", two_square_cipher_decrypt(text, key1, key2))
+
+            elif choice == '8':
+                text = input("Enter text: ")
+                key1 = input("Enter first key: ")
+                key2 = input("Enter second key: ")
+                operation = input("Encrypt or Decrypt (e/d): ").lower()
+                if operation == 'e':
+                    print("Result:", four_square_cipher_encrypt(text, key1, key2))
+                elif operation == 'd':
+                    print("Result:", four_square_cipher_decrypt(text, key1, key2))
+
+            elif choice == '9':
+                text = input("Enter text: ")
+                num_rails = int(input("Enter number of rails: "))
+                operation = input("Encrypt or Decrypt (e/d): ").lower()
+                encrypt = operation == 'e'
+                print("Result:", rail_fence_cipher(text, num_rails, encrypt))
+
+            elif choice == '10':
                 print("Exiting Cryptography Machine. Goodbye!")
                 break
 
@@ -261,6 +441,18 @@ class TestCryptographyMachine(unittest.TestCase):
     def test_playfair_cipher(self):
         self.assertEqual(playfair_cipher("HELLO", "KEY", encrypt=True), "DBNVMI")
         self.assertEqual(playfair_cipher("DBNVMI", "KEY", encrypt=False), "HELLO")
+
+    def test_two_square_cipher(self):
+        # To be implemented
+        pass
+
+    def test_four_square_cipher(self):
+        # To be implemented
+        pass
+
+    def test_rail_fence_cipher(self):
+        # To be implemented
+        pass
 
 if __name__ == "__main__":
     unittest.main()
