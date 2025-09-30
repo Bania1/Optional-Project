@@ -1,63 +1,86 @@
-Optional-Project: Cryptography Machine
-Descripción
-Este proyecto implementa una máquina de cifrados clásicos en Python. Incluye algoritmos de cifrado y descifrado de varios métodos históricos y educativos de criptografía, con una interfaz de menú interactiva para usarlos fácilmente desde consola. Está orientado a la experimentación y estudio de técnicas criptográficas.
+# 🔐 Optional-Project: Cryptography Machine
 
-Características principales
-Implementación de varios cifrados clásicos:
+![Python](https://img.shields.io/badge/python-3.10-blue.svg) ![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)
 
-Cifrado César (Caesar cipher)
+---
 
-ROT13
+## 📚 Descripción
 
-Vigenère
+Proyecto en Python que implementa varios cifrados clásicos para encriptar y desencriptar texto mediante un menú interactivo. Perfecto para aprender y experimentar con criptografía histórica: César, Vigenère, Playfair, Beaufort, y más.
 
-Autokey
+Ideal para estudiantes o entusiastas de la criptografía y desarrollo en Python.
 
-Beaufort
+---
 
-Playfair
+## 🚀 Características principales
 
-Two-Square
+| Cifrado Clásico | Funcionalidad                  |
+|-----------------|-------------------------------|
+| César           | Cifrado y Descifrado          |
+| ROT13           | Variante especial de César    |
+| Vigenère        | Cifrado polialfabético        |
+| Autokey         | Vigenère con clave extendida  |
+| Beaufort        | Cifrado simétrico             |
+| Playfair        | Cifrado de parejas            |
+| Two-Square      | Variante de Playfair con 2 claves |
+| Four-Square     | Variante con 4 matrices       |
+| Rail Fence      | Cifrado en zigzag             |
 
-Four-Square
+---
 
-Rail Fence
+## 🛠 Instalación y Uso
 
-Interfaz de usuario en consola con menú para seleccionar método, ingresar texto y parámetros, y realizar cifrado o descifrado.
+Clona el repositorio:
 
-Código modular y legible con funciones independientes para cada cifrado.
-
-Pruebas unitarias básicas para validar la correcta funcionalidad de los algoritmos implementados.
-
-Soporte para manejo de mayúsculas y caracteres permitidos, preservando espacios y otros símbolos sin cambios.
-
-Instalación
-Clonar el repositorio y ejecutar el script principal con Python 3.x:
-
-bash
 git clone https://github.com/Bania1/Optional-Project.git
 cd Optional-Project
+
+text
+
+Ejecuta con Python 3:
+
 python crytography_machine.py
-No hay dependencias externas, solo utiliza la librería estándar de Python.
 
-Uso
-Al ejecutar el programa, se muestra un menú numérico para seleccionar el cifrado deseado. Luego se solicitan los textos, claves, desplazamientos o parámetros necesarios. El usuario puede elegir entre cifrar o descifrar según el método elegido.
+text
 
-Por ejemplo, para el cifrado César se pide un texto y un valor de desplazamiento; para Vigenère y otros, se solicita además la clave.
+Sigue el menú interactivo para seleccionar el cifrado, ingresar texto y parámetros.
 
-El programa sigue ejecutándose hasta que se elige la opción de salir.
+---
 
-Estructura del código
-Clases y funciones independientes para cada cifra.
+## 🗂 Estructura
 
-Función menu() para mostrar las opciones.
+Optional-Project/
+│
+├── crytography_machine.py # Código del motor de cifrados y menú
+└── README.md # Documentación del proyecto
 
-Función main() con bucle para interactuar con el usuario.
+text
 
-Tests unitarios usando la librería unittest para algunos métodos.
+---
 
-Estado actual y mejoras futuras
-Actualmente algunas pruebas unitarias están comentadas, y se pueden extender para cubrir más casos. También se puede mejorar la gestión de entradas con validaciones más robustas y añadir interfaces gráficas o soporte para más alfabetos/caracteres.
+## 🛤 Mejoras futuras
 
-Autor
-Proyecto desarrollado para fines educativos y de práctica en criptografía clásica con Python.
+- Soporte para alfabetos extendidos y caracteres especiales  
+- Interfaz gráfica de usuario (GUI)  
+- Validaciones de entrada más robustas  
+- Pruebas unitarias completas  
+
+---
+
+## 🧑‍💻 Autor
+
+Proyecto educativo desarrollado por un estudiante de Ingeniería en Software para fortalecer conocimientos en criptografía y Python.
+
+---
+
+## 📄 Licencia
+
+Este proyecto se ofrece sin licencia especificada, se recomienda añadir una para fomentar uso y colaboración.
+
+---
+
+> "La criptografía no es solo seguridad, ¡es historia escrita en código!" 🔐
+
+---
+
+¡Gracias por visitar el repositorio! ⭐ No dudes en contribuir o dejar tus preguntas mediante Issues.
